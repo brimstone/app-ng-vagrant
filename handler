@@ -1,0 +1,4 @@
+#!/bin/sh
+while read -r aline; do
+	echo "$aline" >> /tmp/ssh.log
+done
