@@ -13,6 +13,9 @@ while read -r aline; do
 	"which rsync")
 		echo ""
 		;;
+	"echo; printf /vagrant")
+		printf "/vagrant"
+		;;
 	*)
 	;;
 	esac
