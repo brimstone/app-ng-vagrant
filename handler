@@ -13,6 +13,9 @@ elif [ "$*" = "bash -l" ] || [ "$*" = "sudo -E -H bash -l" ]; then
 			echo
 			printf "/vagrant"
 		;;
+		"shutdown -h now")
+			kill -12 1
+		;;
 		*)
 		;;
 		esac
@@ -23,5 +26,7 @@ elif [ "$1" = "scp" ];then
 	printf "\0"
 	data="$(dd bs="$size" count=1 2>/dev/null)"
 	echo "data: $data" >> /tmp/ssh.log
+	if echo "$data" | grep -q "ifconfig"; then
+		$data
 	exit
 fi
