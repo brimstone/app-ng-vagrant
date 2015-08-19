@@ -1,22 +1,30 @@
 #!/bin/sh
 echo '$*:' "$*" >> /tmp/ssh.log
-if [ "$1" = "" ]; then
-	exit
-fi
-
-while read -r aline; do
-	echo "$aline" >> /tmp/ssh.log
-	case "$aline" in
-	"exit")
+case "$1" in
+	"")
 		exit
-		;;
-	"which rsync")
-		echo ""
-		;;
-	"echo; printf /vagrant")
-		printf "/vagrant"
-		;;
-	*)
 	;;
-	esac
-done
+	"bash")
+		while read -r aline; do
+			echo "$aline" >> /tmp/ssh.log
+			case "$aline" in
+			"exit")
+				exit
+			;;
+			"echo; printf /vagrant")
+				echo
+				printf "/vagrant"
+			;;
+			*)
+			;;
+			esac
+		done
+	;;
+	"scp")
+		char=""
+		while char=$(dd bs=1 count=1); do
+			[ "$char" = $'\n' ] && exit
+			printf "%s" "$char" >> /tmp/ssh.log
+		done
+	;;
+esac
