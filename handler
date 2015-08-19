@@ -4,10 +4,6 @@ if [ "$1" = "" ]; then
 	exit
 fi
 
-if [ "$1" = "sudo" ] && [ "$2" = "rsync" ]; then
-	exit
-fi
-
 while read -r aline; do
 	echo "$aline" >> /tmp/ssh.log
 	case "$aline" in
@@ -15,7 +11,7 @@ while read -r aline; do
 		exit
 		;;
 	"which rsync")
-		echo "/usr/bin/rsync"
+		echo ""
 		;;
 	*)
 	;;
