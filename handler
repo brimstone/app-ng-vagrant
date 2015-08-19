@@ -21,10 +21,11 @@ case "$1" in
 		done
 	;;
 	"scp")
-		char=""
-		while char=$(dd bs=1 count=1); do
-			[ "$char" = $'\n' ] && exit
-			printf "%s" "$char" >> /tmp/ssh.log
-		done
+		printf "\0"
+		read -r _ size _
+		printf "\0"
+		data="$(dd bs="$size" count=1 2>/dev/null)"
+		echo "data: $data" >> /tmp/ssh.log
+		exit
 	;;
 esac
