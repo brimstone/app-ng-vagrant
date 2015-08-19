@@ -1,31 +1,27 @@
 #!/bin/sh
 echo '$*:' "$*" >> /tmp/ssh.log
-case "$1" in
-	"")
-		exit
-	;;
-	"bash")
-		while read -r aline; do
-			echo "$aline" >> /tmp/ssh.log
-			case "$aline" in
-			"exit")
-				exit
-			;;
-			"echo; printf /vagrant")
-				echo
-				printf "/vagrant"
-			;;
-			*)
-			;;
-			esac
-		done
-	;;
-	"scp")
-		printf "\0"
-		read -r _ size _
-		printf "\0"
-		data="$(dd bs="$size" count=1 2>/dev/null)"
-		echo "data: $data" >> /tmp/ssh.log
-		exit
-	;;
-esac
+if [ "$1" = "" ]; then
+exit
+elif [ "$*" = "bash -l" ] || [ "$*" = "sudo -E -H bash -l" ]; then
+	while read -r aline; do
+		echo "$aline" >> /tmp/ssh.log
+		case "$aline" in
+		"exit")
+			exit
+		;;
+		"echo; printf /vagrant")
+			echo
+			printf "/vagrant"
+		;;
+		*)
+		;;
+		esac
+	done
+elif [ "$1" = "scp" ];then
+	printf "\0"
+	read -r _ size _
+	printf "\0"
+	data="$(dd bs="$size" count=1 2>/dev/null)"
+	echo "data: $data" >> /tmp/ssh.log
+	exit
+fi
