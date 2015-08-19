@@ -1,4 +1,5 @@
 #!/bin/sh
+echo '$*:' "$*" >> /tmp/ssh.log
 while read -r aline; do
 	echo "$aline" >> /tmp/ssh.log
 	case "$aline" in
