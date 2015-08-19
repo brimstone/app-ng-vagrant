@@ -1,7 +1,14 @@
 #!/bin/sh
 while read -r aline; do
 	echo "$aline" >> /tmp/ssh.log
-	if [ "$aline" = "exit" ]; then
+	case "$aline" in
+	"exit")
 		exit
-	fi
+		;;
+	"which rsync")
+		echo "/usr/bin/rsync"
+		;;
+	*)
+	;;
+	esac
 done
