@@ -20,7 +20,7 @@ elif [ "$*" = "bash -l" ] || [ "$*" = "sudo -E -H bash -l" ]; then
 		;;
 		esac
 	done
-elif [ "$1" = "scp" ];then
+elif [ "$1" = "scp" ]; then
 	printf "\0"
 	read -r _ size _
 	printf "\0"
@@ -28,7 +28,8 @@ elif [ "$1" = "scp" ];then
 	echo "data: $data" >> /tmp/ssh.log
 	if echo "$data" | grep -q "ifconfig"; then
 		$data
-	exit
+		exit
+	fi
 else
 	echo "don't know how to handle $*" >> /tmp/ssh.log
 	exit
