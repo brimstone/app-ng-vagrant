@@ -1,5 +1,13 @@
 #!/bin/sh
 echo '$*:' "$*" >> /tmp/ssh.log
+if [ "$1" = "" ]; then
+	exit
+fi
+
+if [ "$1" = "sudo" ] && [ "$2" = "rsync" ]; then
+	exit
+fi
+
 while read -r aline; do
 	echo "$aline" >> /tmp/ssh.log
 	case "$aline" in
