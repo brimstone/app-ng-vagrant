@@ -1,7 +1,7 @@
 #!/bin/sh
 echo '$*:' "$*" >> /tmp/ssh.log
 if [ "$1" = "" ]; then
-exit
+	exit
 elif [ "$*" = "bash -l" ] || [ "$*" = "sudo -E -H bash -l" ]; then
 	while read -r aline; do
 		echo "$aline" >> /tmp/ssh.log
@@ -28,5 +28,8 @@ elif [ "$1" = "scp" ];then
 	echo "data: $data" >> /tmp/ssh.log
 	if echo "$data" | grep -q "ifconfig"; then
 		$data
+	exit
+else
+	echo "don't know how to handle $*" >> /tmp/ssh.log
 	exit
 fi
