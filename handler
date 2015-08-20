@@ -5,20 +5,18 @@ if [ "$1" = "" ]; then
 elif [ "$*" = "bash -l" ] || [ "$*" = "sudo -E -H bash -l" ]; then
 	while read -r aline; do
 #		echo "$aline" >> /tmp/ssh.log
-		case "$aline" in
-		"exit")
+		if [ "$aline" = "exit" ]; then
 			exit
-		;;
-		"echo; printf /vagrant")
+		elif [ "$aline" = "echo; printf /vagrant" ]; then
 			echo
 			printf "/vagrant"
-		;;
-		"shutdown -h now")
+		elif [ "$aline" = "shutdown -h now" ]; then
 			kill -12 1
-		;;
-		*)
-		;;
-		esac
+		elif [ "${aline%% *}" = "hostnamectl" ]; then
+			pcd-ctl hostname "${aline##* }"
+		else
+			echo ""
+		fi
 	done
 elif [ "$1" = "scp" ]; then
 	printf "\0"
