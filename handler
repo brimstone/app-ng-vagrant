@@ -31,6 +31,7 @@ elif [ "$1" = "scp" ]; then
 			pcd-ctl hostname "${aline##* }"
 		fi
 	done
+	printf "\0"
 	exit
 else
 #	echo "don't know how to handle $*" >> /tmp/ssh.log
