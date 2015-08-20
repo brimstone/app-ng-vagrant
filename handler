@@ -23,11 +23,15 @@ elif [ "$1" = "scp" ]; then
 	read -r _ size _
 	printf "\0"
 	data="$(dd bs="$size" count=1 2>/dev/null)"
-	echo "data: $data" >> /tmp/ssh.log
-	if echo "$data" | grep -q "ifconfig"; then
-		$data
-		exit
-	fi
+	#echo "data: $data" >> /tmp/ssh.log
+	echo "$data" | while read -r aline; do
+		if echo "$aline" | grep -q "ifconfig"; then
+			$aline
+		elif [ "${aline%% *}" = "hostname" ]; then
+			pcd-ctl hostname "${aline##* }"
+		fi
+	done
+	exit
 else
 #	echo "don't know how to handle $*" >> /tmp/ssh.log
 	exit
