@@ -1,10 +1,15 @@
 #!/bin/sh
-#echo '$*:' "$*" >> /tmp/ssh.log
+
+log(){
+	[ -e "/tmp/ssh.log" ] && echo "$1" >> /tmp/ssh.log
+}
+
+log "\$\*: $*"
 if [ "$1" = "" ]; then
 	exit
 elif [ "$*" = "bash -l" ] || [ "$*" = "sudo -E -H bash -l" ]; then
 	while read -r aline; do
-#		echo "$aline" >> /tmp/ssh.log
+		log "$aline"
 		if [ "$aline" = "exit" ]; then
 			exit
 		elif [ "$aline" = "echo; printf /vagrant" ]; then
@@ -23,7 +28,7 @@ elif [ "$1" = "scp" ]; then
 	read -r _ size _
 	printf "\0"
 	data="$(dd bs="$size" count=1 2>/dev/null)"
-	#echo "data: $data" >> /tmp/ssh.log
+	log "data: $data"
 	echo "$data" | while read -r aline; do
 		if echo "$aline" | grep -q "ifconfig"; then
 			$aline
@@ -34,6 +39,6 @@ elif [ "$1" = "scp" ]; then
 	printf "\0"
 	exit
 else
-#	echo "don't know how to handle $*" >> /tmp/ssh.log
+	log "don't know how to handle $*"
 	exit
 fi
