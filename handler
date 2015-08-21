@@ -4,7 +4,7 @@ log(){
 	[ -e "/tmp/ssh.log" ] && echo "$1" >> /tmp/ssh.log
 }
 
-log "\$\*: $*"
+log "\$*: $*"
 if [ "$1" = "" ]; then
 	exit
 elif [ "$*" = "bash -l" ] || [ "$*" = "sudo -E -H bash -l" ]; then
@@ -23,6 +23,8 @@ elif [ "$*" = "bash -l" ] || [ "$*" = "sudo -E -H bash -l" ]; then
 			echo ""
 		fi
 	done
+elif [ "$*" = "shutdown -h now" ]; then
+	kill -12 1
 elif [ "$1" = "scp" ]; then
 	printf "\0"
 	read -r _ size _
